@@ -7,11 +7,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Import route
 const exchangeTokenRoute = require("./routes/exchange-token");
 app.use("/exchange-token", exchangeTokenRoute);
 
-// ✅ สร้าง table อัตโนมัติ
 async function initDB() {
   try {
     await pool.query(`
