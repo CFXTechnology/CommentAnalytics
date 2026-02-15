@@ -7,6 +7,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const exchangeTokenRoute = require("./routes/exchange-token");
+app.use("/exchange-token", exchangeTokenRoute);
+
 const APP_ID = process.env.APP_ID;
 const APP_SECRET = process.env.APP_SECRET;
 
