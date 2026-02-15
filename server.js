@@ -46,6 +46,38 @@ app.post('/exchange-token', async (req, res) => {
     }
 });
 
+const pool = require("./db");
+
+async function initDB() {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        facebook_user_id TEXT UNIQUE,
+        facebook_name TEXT,
+        long_lived_user_token TEXT,
+        token_expiry TIMESTAMP,
+        created_at TIMESTAMP DEFAULT NOW()
+      );
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS pages (
+        id SERIAL PRIMARY KEY,
+        facebook_page_id TEXT,
+        page_name TEXT,
+        page_access_token TEXT,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        created_at TIMESTAMP DEFAULT NOW()
+      );
+    `);
+  } catch (err) {
+    console.error("DB error:", err);
+  }
+}
+
+initDB();
+
 const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
