@@ -1,23 +1,156 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
-    <title>CommentAnalytics</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommentAnalytics | Facebook Comment Analysis Tool</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        header {
+            background-color: #1877f2;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        header p {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .features ul {
+            padding-left: 20px;
+        }
+
+        .login-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .login-btn {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            background-color: #145dbf;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            background: #f0f2f5;
+        }
+
+        footer a {
+            margin: 0 10px;
+            color: #1877f2;
+            text-decoration: none;
+        }
+
+    </style>
 </head>
 <body>
+
+<header>
     <h1>CommentAnalytics</h1>
+    <p>เครื่องมือวิเคราะห์คอมเมนต์จาก Facebook Page สำหรับธุรกิจ</p>
+</header>
+
+<div class="container">
+
+    <h2>เกี่ยวกับบริการ</h2>
     <p>
-        CommentAnalytics เป็นเครื่องมือสำหรับวิเคราะห์ข้อมูลคอมเมนต์จาก Facebook Page 
-        เพื่อช่วยธุรกิจเข้าใจลูกค้าและปรับปรุงการสื่อสาร
+        CommentAnalytics เป็นเครื่องมือสำหรับดึงและวิเคราะห์ข้อมูลคอมเมนต์จาก Facebook Page 
+        เพื่อช่วยให้ธุรกิจเข้าใจลูกค้า วิเคราะห์แนวโน้ม และปรับปรุงกลยุทธ์การสื่อสาร
     </p>
 
-    <h3>ติดต่อเรา</h3>
-    <p>Email: cristlollo@gmail.com</p>
+    <div class="features">
+        <h3>ฟีเจอร์หลัก</h3>
+        <ul>
+            <li>ดึงข้อมูลคอมเมนต์จาก Facebook Page</li>
+            <li>ส่งออกไฟล์ .CSV สำหรับ Excel หรือ Google Sheets</li>
+            <li>วิเคราะห์ข้อมูลเพื่อสนับสนุนการตัดสินใจทางธุรกิจ</li>
+        </ul>
+    </div>
 
-    <h3>เอกสารทางกฎหมาย</h3>
-    <p>
-        <a href="privacy.html">นโยบายความเป็นส่วนตัว</a><br>
-        <a href="delete.html">คำขอลบข้อมูล</a>
-    </p>
+    <div class="login-section">
+        <h3>เริ่มต้นใช้งาน</h3>
+        <button class="login-btn" onclick="login()">Login with Facebook</button>
+        <p style="margin-top:10px; font-size:13px; color:gray;">
+            ระบบจะขอสิทธิ์เข้าถึงข้อมูลเพจของคุณเพื่อการวิเคราะห์เท่านั้น
+        </p>
+    </div>
+
+</div>
+
+<footer>
+    <p>ติดต่อ: cristlollol@gmail.com</p>
+    <a href="privacy.html">Privacy Policy</a> |
+    <a href="terms.html">Terms of Service</a> |
+    <a href="delete.html">Data Deletion</a>
+</footer>
+
+<!-- Facebook SDK -->
+<script>
+window.fbAsyncInit = function() {
+  FB.init({
+    appId      : 'connect 138.199.24.202:20025',
+    cookie     : true,
+    xfbml      : true,
+    version    : 'v24.0'
+  });
+};
+
+(function(d, s, id){
+   var js, fjs = d.getElementsByTagName(s)[0];
+   if (d.getElementById(id)) {return;}
+   js = d.createElement(s); js.id = id;
+   js.src = "https://connect.facebook.net/en_US/sdk.js";
+   fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+function login() {
+  FB.login(function(response) {
+    if (response.authResponse) {
+      alert("Login สำเร็จ");
+      console.log("Access Token:", response.authResponse.accessToken);
+    } else {
+      alert("ผู้ใช้ยกเลิกการเข้าสู่ระบบ");
+    }
+  }, {
+    scope: 'pages_show_list,pages_read_engagement,pages_read_user_content'
+  });
+}
+</script>
+
 </body>
 </html>
