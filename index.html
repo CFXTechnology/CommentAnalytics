@@ -141,15 +141,26 @@ window.fbAsyncInit = function() {
 function login() {
   FB.login(function(response) {
     if (response.authResponse) {
-      alert("Login สำเร็จ");
-      console.log("Access Token:", response.authResponse.accessToken);
-    } else {
-      alert("ผู้ใช้ยกเลิกการเข้าสู่ระบบ");
+
+      const token = response.authResponse.accessToken;
+
+      fetch("https://commentanalytics.onrender.com/exchange-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: token })
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        alert("Token exchange สำเร็จ");
+      });
+
     }
   }, {
-    scope: 'pages_show_list,pages_read_engagement,pages_read_user_content'
+    scope: 'pages_show_list,business_management,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement'
   });
 }
+
 </script>
 
 </body>
