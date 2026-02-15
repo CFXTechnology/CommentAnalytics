@@ -1,10 +1,13 @@
+const express = require("express");
+const router = express.Router();
 const axios = require("axios");
 const pool = require("./db");
 
-app.post("/exchange-token", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { longToken } = req.body;
 
+    // ดึง profile
     const profileRes = await axios.get(
       "https://graph.facebook.com/me",
       {
@@ -36,15 +39,11 @@ app.post("/exchange-token", async (req, res) => {
     const pagesRes = await axios.get(
       "https://graph.facebook.com/me/accounts",
       {
-        params: {
-          access_token: longToken
-        }
+        params: { access_token: longToken }
       }
     );
 
-    const pages = pagesRes.data.data;
-
-    for (const page of pages) {
+    for (const page of pagesRes.data.data) {
       await pool.query(
         `
         INSERT INTO pages (facebook_page_id, page_name, page_access_token, user_id)
@@ -62,6 +61,8 @@ app.post("/exchange-token", async (req, res) => {
 
   } catch (err) {
     console.error(err.response?.data || err.message);
-    res.status(500).json({ error: "Something went wrong" });
+    res.status(500).json({ error: "Failed to save token" });
   }
 });
+
+module.exports = router;
